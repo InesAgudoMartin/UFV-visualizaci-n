@@ -1,0 +1,631 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMznVxoxyPtV72nhr9siaIN",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/InesAgudoMartin/UFV-visualizaci-n/blob/main/Ejercicios%20de%20clase/clase%202\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "#Leemos el archivo csv desde Github\n",
+        "url = 'https://raw.githubusercontent.com/InesAgudoMartin/UFV-visualizaci-n/refs/heads/main/Ejercicios%20de%20clase/datos_ejercicio_ventas.csv?token=GHSAT0AAAAAACYZ654X3NAJI5XOYPSXQ3KOZYSRPNA'\n",
+        "\n",
+        "df = pd.read_csv(url, sep = ',')\n",
+        "#Solo nos interesan las primeras filas, porque ya nos permite visualizar todas las columnas que son con las que vamos a trabajar con las preguntas\n",
+        "df.head()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 206
+        },
+        "id": "_j5H6Alub4dP",
+        "outputId": "c0952a55-2914-4a1e-b8ec-8125068d1d8c"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "         COUNTRY        SUBBRAND  YEAR  MONTH     SCENARIO FORECAST  \\\n",
+              "0       Portugal     Lipton (L3)  2023     12  AI_forecast  AI_P02F   \n",
+              "1  Great Britain     Lipton (L3)  2023     12  AI_forecast  AI_P10F   \n",
+              "2          Spain  Pepsi Max (L3)  2023     12  AI_forecast  AI_P09F   \n",
+              "3  Great Britain        7up (L3)  2024     12  AI_forecast  AI_P10F   \n",
+              "4        Hungary     Lipton (L3)  2023      9  AI_forecast  AI_P03F   \n",
+              "\n",
+              "   FORECAST_YEAR         AMOUNT  \n",
+              "0         2023.0  754356.237194  \n",
+              "1         2023.0  560030.558029  \n",
+              "2         2023.0   88501.980847  \n",
+              "3         2023.0  363224.511516  \n",
+              "4         2023.0  396176.120491  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-9bac930e-ca90-414b-8d63-84d027596291\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>COUNTRY</th>\n",
+              "      <th>SUBBRAND</th>\n",
+              "      <th>YEAR</th>\n",
+              "      <th>MONTH</th>\n",
+              "      <th>SCENARIO</th>\n",
+              "      <th>FORECAST</th>\n",
+              "      <th>FORECAST_YEAR</th>\n",
+              "      <th>AMOUNT</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>Portugal</td>\n",
+              "      <td>Lipton (L3)</td>\n",
+              "      <td>2023</td>\n",
+              "      <td>12</td>\n",
+              "      <td>AI_forecast</td>\n",
+              "      <td>AI_P02F</td>\n",
+              "      <td>2023.0</td>\n",
+              "      <td>754356.237194</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>Great Britain</td>\n",
+              "      <td>Lipton (L3)</td>\n",
+              "      <td>2023</td>\n",
+              "      <td>12</td>\n",
+              "      <td>AI_forecast</td>\n",
+              "      <td>AI_P10F</td>\n",
+              "      <td>2023.0</td>\n",
+              "      <td>560030.558029</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>Spain</td>\n",
+              "      <td>Pepsi Max (L3)</td>\n",
+              "      <td>2023</td>\n",
+              "      <td>12</td>\n",
+              "      <td>AI_forecast</td>\n",
+              "      <td>AI_P09F</td>\n",
+              "      <td>2023.0</td>\n",
+              "      <td>88501.980847</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>Great Britain</td>\n",
+              "      <td>7up (L3)</td>\n",
+              "      <td>2024</td>\n",
+              "      <td>12</td>\n",
+              "      <td>AI_forecast</td>\n",
+              "      <td>AI_P10F</td>\n",
+              "      <td>2023.0</td>\n",
+              "      <td>363224.511516</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>Hungary</td>\n",
+              "      <td>Lipton (L3)</td>\n",
+              "      <td>2023</td>\n",
+              "      <td>9</td>\n",
+              "      <td>AI_forecast</td>\n",
+              "      <td>AI_P03F</td>\n",
+              "      <td>2023.0</td>\n",
+              "      <td>396176.120491</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-9bac930e-ca90-414b-8d63-84d027596291')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-9bac930e-ca90-414b-8d63-84d027596291 button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-9bac930e-ca90-414b-8d63-84d027596291');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "<div id=\"df-49c4244d-86c1-42bf-8b15-127bb16b0dc2\">\n",
+              "  <button class=\"colab-df-quickchart\" onclick=\"quickchart('df-49c4244d-86c1-42bf-8b15-127bb16b0dc2')\"\n",
+              "            title=\"Suggest charts\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "     width=\"24px\">\n",
+              "    <g>\n",
+              "        <path d=\"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z\"/>\n",
+              "    </g>\n",
+              "</svg>\n",
+              "  </button>\n",
+              "\n",
+              "<style>\n",
+              "  .colab-df-quickchart {\n",
+              "      --bg-color: #E8F0FE;\n",
+              "      --fill-color: #1967D2;\n",
+              "      --hover-bg-color: #E2EBFA;\n",
+              "      --hover-fill-color: #174EA6;\n",
+              "      --disabled-fill-color: #AAA;\n",
+              "      --disabled-bg-color: #DDD;\n",
+              "  }\n",
+              "\n",
+              "  [theme=dark] .colab-df-quickchart {\n",
+              "      --bg-color: #3B4455;\n",
+              "      --fill-color: #D2E3FC;\n",
+              "      --hover-bg-color: #434B5C;\n",
+              "      --hover-fill-color: #FFFFFF;\n",
+              "      --disabled-bg-color: #3B4455;\n",
+              "      --disabled-fill-color: #666;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart {\n",
+              "    background-color: var(--bg-color);\n",
+              "    border: none;\n",
+              "    border-radius: 50%;\n",
+              "    cursor: pointer;\n",
+              "    display: none;\n",
+              "    fill: var(--fill-color);\n",
+              "    height: 32px;\n",
+              "    padding: 0;\n",
+              "    width: 32px;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart:hover {\n",
+              "    background-color: var(--hover-bg-color);\n",
+              "    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "    fill: var(--button-hover-fill-color);\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart-complete:disabled,\n",
+              "  .colab-df-quickchart-complete:disabled:hover {\n",
+              "    background-color: var(--disabled-bg-color);\n",
+              "    fill: var(--disabled-fill-color);\n",
+              "    box-shadow: none;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-spinner {\n",
+              "    border: 2px solid var(--fill-color);\n",
+              "    border-color: transparent;\n",
+              "    border-bottom-color: var(--fill-color);\n",
+              "    animation:\n",
+              "      spin 1s steps(1) infinite;\n",
+              "  }\n",
+              "\n",
+              "  @keyframes spin {\n",
+              "    0% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "      border-left-color: var(--fill-color);\n",
+              "    }\n",
+              "    20% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    30% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    40% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    60% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    80% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "    90% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "  }\n",
+              "</style>\n",
+              "\n",
+              "  <script>\n",
+              "    async function quickchart(key) {\n",
+              "      const quickchartButtonEl =\n",
+              "        document.querySelector('#' + key + ' button');\n",
+              "      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.\n",
+              "      quickchartButtonEl.classList.add('colab-df-spinner');\n",
+              "      try {\n",
+              "        const charts = await google.colab.kernel.invokeFunction(\n",
+              "            'suggestCharts', [key], {});\n",
+              "      } catch (error) {\n",
+              "        console.error('Error during call to suggestCharts:', error);\n",
+              "      }\n",
+              "      quickchartButtonEl.classList.remove('colab-df-spinner');\n",
+              "      quickchartButtonEl.classList.add('colab-df-quickchart-complete');\n",
+              "    }\n",
+              "    (() => {\n",
+              "      let quickchartButtonEl =\n",
+              "        document.querySelector('#df-49c4244d-86c1-42bf-8b15-127bb16b0dc2 button');\n",
+              "      quickchartButtonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "    })();\n",
+              "  </script>\n",
+              "</div>\n",
+              "\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "variable_name": "df",
+              "summary": "{\n  \"name\": \"df\",\n  \"rows\": 18666,\n  \"fields\": [\n    {\n      \"column\": \"COUNTRY\",\n      \"properties\": {\n        \"dtype\": \"category\",\n        \"num_unique_values\": 9,\n        \"samples\": [\n          \"Italy\",\n          \"Great Britain\",\n          \"Denmark\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"SUBBRAND\",\n      \"properties\": {\n        \"dtype\": \"category\",\n        \"num_unique_values\": 6,\n        \"samples\": [\n          \"Lipton (L3)\",\n          \"Pepsi Max (L3)\",\n          \"7up Free (L3)\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"YEAR\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 0,\n        \"min\": 2023,\n        \"max\": 2025,\n        \"num_unique_values\": 3,\n        \"samples\": [\n          2023,\n          2024,\n          2025\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"MONTH\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 3,\n        \"min\": 1,\n        \"max\": 12,\n        \"num_unique_values\": 12,\n        \"samples\": [\n          5,\n          3,\n          12\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"SCENARIO\",\n      \"properties\": {\n        \"dtype\": \"category\",\n        \"num_unique_values\": 2,\n        \"samples\": [\n          \"actual\",\n          \"AI_forecast\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"FORECAST\",\n      \"properties\": {\n        \"dtype\": \"category\",\n        \"num_unique_values\": 12,\n        \"samples\": [\n          \"AI_P08F\",\n          \"AI_P12F\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"FORECAST_YEAR\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 0.0,\n        \"min\": 2023.0,\n        \"max\": 2023.0,\n        \"num_unique_values\": 1,\n        \"samples\": [\n          2023.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"AMOUNT\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 1915283.448382496,\n        \"min\": -217120.10313272703,\n        \"max\": 14815628.237867463,\n        \"num_unique_values\": 17121,\n        \"samples\": [\n          2568883.4881238216\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    }\n  ]\n}"
+            }
+          },
+          "metadata": {},
+          "execution_count": 5
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Calculo el tamaño del dataset, que es de 18666 filas y 8 columnas."
+      ],
+      "metadata": {
+        "id": "ezoqtVCNc2sl"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CUYVaiMuc0L9",
+        "outputId": "c081abb5-c1c7-4a99-bac4-0231367fd419"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(18666, 8)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 6
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "1. Número de actuals y forecasts:\n",
+        "Podemos comprobarlo también en el propio excell, tenemos 900 actuals y 1766 forecasts, la suma de ambos nos da el total: 18666"
+      ],
+      "metadata": {
+        "id": "iliKuOL6bT8I"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "num_forecasts = df[df['SCENARIO'] == 'AI_forecast'].shape[0]\n",
+        "num_actuals = df[df['SCENARIO'] == 'actual'].shape[0]\n",
+        "print('El número de forecasts es:', num_forecasts)\n",
+        "print('El número de actuals es:', num_actuals)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vOpxOWykdXkY",
+        "outputId": "9a389a55-efcf-449b-8522-ae885c4886e6"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "El número de forecasts es: 17766\n",
+            "El número de actuals es: 900\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "2. Horizonte predicción: misma prediccion para todos los meses, quiero escoger un solo producto en un solo país, el max numero de predicciones (hasta el mes que llegue) es el horizonte buscado"
+      ],
+      "metadata": {
+        "id": "OIXeAjfrbWUB"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sa1njTpQey3z",
+        "outputId": "496db9d9-4e8c-460a-ae80-eb2dcba385ab"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(9, 6)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 18
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "3. Número de países y de productos:\n",
+        "Para saber el número de países y productos que tenemos, calculando los únicos lo que hacemos es ver cuántos DIFERENTES hay presentes en el conjunto de datos."
+      ],
+      "metadata": {
+        "id": "ars2XPDmbYFM"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "paises = df['COUNTRY'].nunique()\n",
+        "productos = df['SUBBRAND'].nunique()\n",
+        "\n",
+        "paises, productos"
+      ],
+      "metadata": {
+        "id": "jfK-siTAinMQ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "4. Histórico de actuals/forecasts:\n",
+        "Hallar el histórico para cada pais y cada producto pero todos tienen el mimso historico: desde cuando hasta cuando tengo valores reales de venta (actuals, son valores reales de cuanto se ha vendido), y lo mismo con 'forecasts'"
+      ],
+      "metadata": {
+        "id": "9dqz52QubaW7"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "forecast_df = df[df['SCENARIO'] == 'AI_forecast']\n",
+        "\n",
+        "#año maximo y minimo\n",
+        "min_year = forecast_df['YEAR'].min()\n",
+        "max_year = forecast_df['YEAR'].max()\n",
+        "#mes maximo y minimo\n",
+        "min_month = forecast_df[forecast_df['YEAR'] == min_year]['MONTH'].min()\n",
+        "max_month = forecast_df[forecast_df['YEAR'] == max_year]['MONTH'].max()\n",
+        "\n",
+        "(min_year, min_month), (max_year, max_month)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hJHlpz5AjeTX",
+        "outputId": "8e2fb089-df22-4a72-8268-5382be0fc46d"
+      },
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "((2023, 1), (2025, 5))"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 26
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "actual_df = df[df['SCENARIO'] == 'actual']\n",
+        "\n",
+        "#año maximo y minimo\n",
+        "min_year = actual_df['YEAR'].min()\n",
+        "max_year = actual_df['YEAR'].max()\n",
+        "#mes maximo y minimo\n",
+        "min_month = actual_df[actual_df['YEAR'] == min_year]['MONTH'].min()\n",
+        "max_month = actual_df[actual_df['YEAR'] == max_year]['MONTH'].max()\n",
+        "\n",
+        "(min_year, min_month), (max_year, max_month)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "mxwVsnRokfKS",
+        "outputId": "885f3d57-939c-430c-d275-a33c3186bf6d"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "((2023, 1), (2024, 8))"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 27
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "5. forecasts distintos: todas las combinaciones tenienod en cuenta el año, cuantos distintos hay sabiendo que un mismo 'AI:PO2F' por ejemplo, puede estar en varios años diferentes, es decir, filtramos los distintos que hay CADA AÑO, y los sumas."
+      ],
+      "metadata": {
+        "id": "yLtKqYJPbev1"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Primero buscamos, en CADA AÑO los 'forecast' distintos que hay\n",
+        "forecasts_distintos = df.groupby(['YEAR', 'FORECAST']).size().reset_index(name='count')\n",
+        "\n",
+        "#Sumamos las combinaciones distintas que hay cada año\n",
+        "resultado = forecasts_distintos.shape[0]\n",
+        "\n",
+        "resultado"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "MtEdsNrdmdwA",
+        "outputId": "3b63edca-e645-41fb-f545-a2f3c161dcee"
+      },
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "29"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 30
+        }
+      ]
+    }
+  ]
+}
